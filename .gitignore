@@ -1,0 +1,12 @@
+# El entorno de Moodle + Docker NO va al repo (es pesado y no es código propio).
+# Vive aparte, en ~/moodle-dev/ — ver docs/como-reproducir.md
+moodle-docker/
+moodle/
+
+# Sistema
+.DS_Store
+*.log
+
+# Temporales
+_provision/
+*.tmp
