@@ -111,6 +111,32 @@ Detalles que importaron:
 - Para cursos grandes, este enfoque (contexto completo) no escala: ahí conviene RAG real con
   embeddings (`nomic-embed-text`) y recuperación de fragmentos. Es el siguiente paso del roadmap.
 
+## 8. Feedback automático + analítica vía API REST (Python)
+
+Para leer el progreso de los alumnos desde un sistema externo se usaron los **web services
+REST** de Moodle (no la base de datos directa: una integración real consume la API).
+
+**Setup (en `scripts/`... corrido vía PHP en el contenedor):**
+1. Habilitar `enablewebservices=1` y el protocolo `rest`.
+2. Crear un **servicio externo** (`external_services`) con las funciones necesarias:
+   - `core_enrol_get_enrolled_users` → alumnos del curso
+   - `core_completion_get_activities_completion_status` → progreso por alumno
+3. Generar un **token** (`external_tokens`) para un usuario con permisos.
+
+**Cliente (`05_feedback_analitica.py`):** Python con solo librería estándar (`urllib`), sin
+dependencias. Llama a la API REST (`/webservice/rest/server.php`), arma el progreso por
+alumno y genera con Ollama: (a) feedback personalizado para cada uno y (b) un informe para
+el docente con detección de alumnos en riesgo. Resultado de ejemplo en `informe-ejemplo.md`.
+
+**Aprendizajes de calidad:**
+- El modelo local chico tiende a **alucinar** (inventa módulos, agrega contexto escolar).
+  Se mitiga con prompts estrictos ("no inventes", "es formación profesional de adultos").
+  Con un modelo mayor o RAG real, mejora.
+- El **token no se versiona** en el repo: el script lo lee de la variable de entorno
+  `MOODLE_WSTOKEN`. Buena práctica de seguridad.
+- Python corre en el host y habla con Moodle (`localhost:8000`) y Ollama (`localhost:11434`)
+  directamente: no necesita la red interna de Docker (a diferencia de Moodle→Ollama).
+
 ## Resumen de aprendizajes
 
 | Tema | Aprendizaje |

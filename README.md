@@ -28,8 +28,8 @@ generada por `llama3` corriendo en la misma máquina.
 | Respuestas en español | ✅ |
 | Provisioning del curso por código (API de Moodle) | ✅ |
 | **Chatbot conversacional** que responde sobre el curso (RAG simple) | ✅ |
-| Feedback automático según progreso del alumno | ⬜ roadmap |
-| Analítica e informes con IA | ⬜ roadmap |
+| **Feedback automático** según progreso (Python + API REST + IA) | ✅ |
+| **Analítica:** informe docente + detección de alumnos en riesgo | ✅ |
 
 ## 🧱 Stack
 
@@ -52,7 +52,8 @@ moodle-tutor-ia/
 │   ├── 01_provision_curso.php       Crea el curso y los módulos
 │   ├── 02_cargar_contenido.php      Carga el material (formato Markdown)
 │   ├── 03_instrucciones_espanol.php Ajusta la IA para responder en español
-│   └── 04_config_chatbot.php        Configura el chatbot (rol + material como fuente)
+│   ├── 04_config_chatbot.php        Configura el chatbot (rol + material como fuente)
+│   └── 05_feedback_analitica.py     Feedback + analítica (Python, API REST + IA local)
 ├── docs/         Documentación técnica y de negocio
 │   ├── como-reproducir.md           Levantar todo el entorno paso a paso
 │   ├── decisiones-tecnicas.md       Problemas resueltos (clave para entrevista)
@@ -73,10 +74,10 @@ sectorial con IA*.
 
 ## 🛣️ Roadmap
 
-El chatbot actual usa **RAG simple** (inyecta el material del curso como contexto). Próximos pasos:
+El chatbot usa **RAG simple** (inyecta el material como contexto). Próximas mejoras:
 
 1. **RAG real con embeddings:** indexar el material con `nomic-embed-text` y recuperar solo
    los fragmentos relevantes (escala mejor con cursos grandes que el contexto completo).
-2. **Feedback automático:** script que lee el progreso vía API REST de Moodle y genera
-   devolución personalizada con IA.
-3. **Analítica:** detección de alumnos en riesgo + informe en lenguaje natural para el docente.
+2. **Automatizar el informe:** correr `05_feedback_analitica.py` de forma programada (cron) y
+   enviar el feedback a cada alumno y el informe al docente por mensajería de Moodle.
+3. **Más señales:** sumar notas de quizzes y último acceso al modelo de riesgo de abandono.

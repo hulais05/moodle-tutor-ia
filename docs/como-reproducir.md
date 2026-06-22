@@ -117,6 +117,30 @@ Luego, en el curso: **Edit mode → Add a block → Ollama Chat Block**.
 - **Asistente (resumir/explicar):** entrar a un módulo → **✨ AI features → Explicar / Resumir**.
 - **Chatbot:** en el curso, escribir una pregunta en el bloque **Ollama Chat**.
 
+## 6. Feedback automático + analítica (Python + API REST)
+
+Datos de prueba (alumnos con progreso variado) y habilitar la API REST:
+
+```bash
+cp scripts/05_feedback_analitica.py ~/moodle-dev/moodle-docker/moodle/  # opcional, corre desde el repo
+cd ~/moodle-dev/moodle-docker
+# (scripts _alumnos.php y _webservice.php crean alumnos, progreso, servicio y token)
+bin/moodle-docker-compose exec webserver php _alumnos.php
+bin/moodle-docker-compose exec webserver php _webservice.php   # imprime TOKEN=...
+```
+
+Correr el pipeline (Python, sin dependencias externas):
+
+```bash
+cd <ruta-del-repo>/scripts
+export MOODLE_WSTOKEN="<el token del paso anterior>"
+export MOODLE_URL="http://localhost:8000"
+export MOODLE_COURSEID="2"
+python3 05_feedback_analitica.py
+```
+
+Genera feedback por alumno + informe para el docente (ver `informe-ejemplo.md`).
+
 ## Comandos útiles del día a día
 
 ```bash

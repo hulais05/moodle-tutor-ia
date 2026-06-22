@@ -10,3 +10,6 @@ moodle/
 # Temporales
 _provision/
 *.tmp
+
+# Informe generado al correr el script (el ejemplo curado está en docs/)
+scripts/informe_alumnos.md
