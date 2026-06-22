@@ -27,7 +27,7 @@ generada por `llama3` corriendo en la misma máquina.
 | Asistente de curso que resume y explica contenido | ✅ |
 | Respuestas en español | ✅ |
 | Provisioning del curso por código (API de Moodle) | ✅ |
-| Chatbot conversacional (RAG, preguntas libres) | ⬜ roadmap |
+| **Chatbot conversacional** que responde sobre el curso (RAG simple) | ✅ |
 | Feedback automático según progreso del alumno | ⬜ roadmap |
 | Analítica e informes con IA | ⬜ roadmap |
 
@@ -38,6 +38,7 @@ generada por `llama3` corriendo en la misma máquina.
 | LMS | Moodle 5.0 (entorno oficial `moodlehq/moodle-docker`) |
 | Subsistema IA | Providers / Placements / Manager (nativo de Moodle 5.0) |
 | Proveedor | `aiprovider_ollama` (nativo) |
+| Chatbot | `block_ollama_chat` (modo chat → `/v1/chat/completions` de Ollama) |
 | Modelo (chat) | Ollama → `llama3` |
 | Modelo (embeddings, para RAG futuro) | `nomic-embed-text` |
 | Provisioning | PHP + APIs internas de Moodle |
@@ -50,7 +51,8 @@ moodle-tutor-ia/
 ├── scripts/      Automatización con las APIs de Moodle
 │   ├── 01_provision_curso.php       Crea el curso y los módulos
 │   ├── 02_cargar_contenido.php      Carga el material (formato Markdown)
-│   └── 03_instrucciones_espanol.php Ajusta la IA para responder en español
+│   ├── 03_instrucciones_espanol.php Ajusta la IA para responder en español
+│   └── 04_config_chatbot.php        Configura el chatbot (rol + material como fuente)
 ├── docs/         Documentación técnica y de negocio
 │   ├── como-reproducir.md           Levantar todo el entorno paso a paso
 │   ├── decisiones-tecnicas.md       Problemas resueltos (clave para entrevista)
@@ -71,8 +73,10 @@ sectorial con IA*.
 
 ## 🛣️ Roadmap
 
-1. **Chatbot conversacional (RAG):** indexar el material con `nomic-embed-text` y permitir
-   preguntas libres del alumno sobre el curso.
+El chatbot actual usa **RAG simple** (inyecta el material del curso como contexto). Próximos pasos:
+
+1. **RAG real con embeddings:** indexar el material con `nomic-embed-text` y recuperar solo
+   los fragmentos relevantes (escala mejor con cursos grandes que el contexto completo).
 2. **Feedback automático:** script que lee el progreso vía API REST de Moodle y genera
    devolución personalizada con IA.
 3. **Analítica:** detección de alumnos en riesgo + informe en lenguaje natural para el docente.

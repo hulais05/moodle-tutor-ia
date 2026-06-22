@@ -89,6 +89,28 @@ vive en la columna `actionconfig` (JSON) de la tabla `ai_providers`.
 **Solución:** anteponer a cada `systeminstruction` una instrucción de idioma. Ver
 `scripts/03_instrucciones_espanol.php`.
 
+## 7. Chatbot conversacional con Ollama (`block_ollama_chat`)
+
+Para el chat conversacional (preguntas libres) se evaluaron varios plugins:
+
+- **`block_ai_chat` (mebis):** potente, pero arrastra dependencias (`local_ai_manager` +
+  `tiny_ai`) con versiones específicas → más superficie de incompatibilidad. Descartado.
+- **`block_ollama_chat` (ragcon-ai):** autónomo, sin dependencias, apunta directo a Ollama.
+  **Elegido.**
+
+Detalles que importaron:
+
+- El plugin tiene dos modos: **`assistant`** (usa `/v1/assistants` y `/v1/threads`, exclusivos
+  de OpenAI → NO funciona con Ollama) y **`chat`** (usa `/v1/chat/completions`, que Ollama
+  **sí** expone como API compatible con OpenAI). Hay que usar el modo **chat**.
+- Endpoint: `http://host.docker.internal:11434` (sin `/v1`, el plugin lo agrega).
+- **RAG simple:** el plugin inyecta dos campos como mensajes de sistema —`prompt` (rol del
+  tutor) y `sourceoftruth` (el material del curso)—. Cargando el material del curso en
+  `sourceoftruth`, el chatbot responde **basándose en el contenido del curso**. Ver
+  `scripts/04_config_chatbot.php`.
+- Para cursos grandes, este enfoque (contexto completo) no escala: ahí conviene RAG real con
+  embeddings (`nomic-embed-text`) y recuperación de fragmentos. Es el siguiente paso del roadmap.
+
 ## Resumen de aprendizajes
 
 | Tema | Aprendizaje |

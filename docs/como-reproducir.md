@@ -89,9 +89,33 @@ cd ~/moodle-dev/moodle-docker
 bin/moodle-docker-compose exec webserver php 03_instrucciones_espanol.php
 ```
 
-## 4. Probar
+## 4. Chatbot conversacional (block_ollama_chat)
 
-Entrar a un módulo del curso → botón **✨ AI features → Explicar / Resumir**.
+```bash
+cd ~/moodle-dev/moodle-docker/moodle/blocks
+git clone https://github.com/ragcon-ai/moodle-block_ollama_chat.git ollama_chat
+cd ~/moodle-dev/moodle-docker
+bin/moodle-docker-compose exec webserver php admin/cli/upgrade.php --non-interactive
+
+# Configurar para usar Ollama (modo chat)
+bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --component=block_ollama_chat --name=apiendpoint --set="http://host.docker.internal:11434"
+bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --component=block_ollama_chat --name=model --set="llama3"
+bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --component=block_ollama_chat --name=apikey --set="ollama"
+
+# Cargar rol del tutor + material del curso como "fuente de verdad"
+cp scripts/04_config_chatbot.php ~/moodle-dev/moodle-docker/moodle/
+bin/moodle-docker-compose exec webserver php 04_config_chatbot.php
+```
+
+Luego, en el curso: **Edit mode → Add a block → Ollama Chat Block**.
+
+> El modo debe ser **chat** (default), no *assistant*: Ollama soporta `/v1/chat/completions`
+> pero no la API de Assistants de OpenAI. Ver `decisiones-tecnicas.md`.
+
+## 5. Probar
+
+- **Asistente (resumir/explicar):** entrar a un módulo → **✨ AI features → Explicar / Resumir**.
+- **Chatbot:** en el curso, escribir una pregunta en el bloque **Ollama Chat**.
 
 ## Comandos útiles del día a día
 
