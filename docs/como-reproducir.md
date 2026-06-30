@@ -107,7 +107,8 @@ cp scripts/04_config_chatbot.php ~/moodle-dev/moodle-docker/moodle/
 bin/moodle-docker-compose exec webserver php 04_config_chatbot.php
 ```
 
-Luego, en el curso: **Edit mode → Add a block → Ollama Chat Block**.
+Luego, en el curso: **Edit mode → Add a block → Ollama Chat Block** (tras aplicar el idioma
+español del paso 7 el bloque aparece como **Tutor IA**).
 
 > El modo debe ser **chat** (default), no *assistant*: Ollama soporta `/v1/chat/completions`
 > pero no la API de Assistants de OpenAI. Ver `decisiones-tecnicas.md`.
@@ -115,7 +116,7 @@ Luego, en el curso: **Edit mode → Add a block → Ollama Chat Block**.
 ## 5. Probar
 
 - **Asistente (resumir/explicar):** entrar a un módulo → **✨ AI features → Explicar / Resumir**.
-- **Chatbot:** en el curso, escribir una pregunta en el bloque **Ollama Chat**.
+- **Chatbot:** en el curso, escribir una pregunta en el bloque **Tutor IA**.
 
 ## 6. Feedback automático + analítica (Python + API REST)
 
@@ -140,6 +141,11 @@ python3 05_feedback_analitica.py
 ```
 
 Genera feedback por alumno + informe para el docente (ver `informe-ejemplo.md`).
+
+## 7. Interfaz en español y acceso remoto para revisión
+
+Para dejarlo en español (Moodle + bloque **Tutor IA**), apagar el modo desarrollador y
+exponerlo a un revisor externo por túnel: ver **[idioma-y-acceso-demo.md](idioma-y-acceso-demo.md)**.
 
 ## Comandos útiles del día a día
 

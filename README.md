@@ -13,9 +13,12 @@ terceros.
 
 El alumno entra a un módulo del curso, pulsa **✨ AI features → Explicar / Resumir**, y el
 asistente lee el contenido de la página y devuelve una explicación/resumen en español,
-generada por `llama3` corriendo en la misma máquina.
+generada por `llama3` corriendo en la misma máquina. El bloque **Tutor IA** además responde
+preguntas libres sobre el curso.
 
-*(Ver `capturas/` para el video y las imágenes de la demo.)*
+![Demo del MVP: curso → módulo → Tutor IA respondiendo](capturas/MVP-TutorIA-Moodle-demo.gif)
+
+*(Recorrido: página principal → módulo → el Tutor IA respondiendo en español.)*
 
 ## ✅ Qué hace (mapeado a un caso real)
 
@@ -26,6 +29,7 @@ generada por `llama3` corriendo en la misma máquina.
 | Asignar modelos por acción (generar / resumir / explicar) | ✅ |
 | Asistente de curso que resume y explica contenido | ✅ |
 | Respuestas en español | ✅ |
+| Interfaz de Moodle y del bloque Tutor IA en español | ✅ |
 | Provisioning del curso por código (API de Moodle) | ✅ |
 | **Chatbot conversacional** que responde sobre el curso (RAG simple) | ✅ |
 | **Feedback automático** según progreso (Python + API REST + IA) | ✅ |
@@ -53,10 +57,12 @@ moodle-tutor-ia/
 │   ├── 02_cargar_contenido.php      Carga el material (formato Markdown)
 │   ├── 03_instrucciones_espanol.php Ajusta la IA para responder en español
 │   ├── 04_config_chatbot.php        Configura el chatbot (rol + material como fuente)
-│   └── 05_feedback_analitica.py     Feedback + analítica (Python, API REST + IA local)
+│   ├── 05_feedback_analitica.py     Feedback + analítica (Python, API REST + IA local)
+│   └── personalizaciones/           Customizaciones versionadas (idioma es del bloque Tutor IA)
 ├── docs/         Documentación técnica y de negocio
 │   ├── como-reproducir.md           Levantar todo el entorno paso a paso
 │   ├── decisiones-tecnicas.md       Problemas resueltos (clave para entrevista)
+│   ├── idioma-y-acceso-demo.md      Interfaz en español + acceso remoto para revisión
 │   └── recomendacion-escala-presupuesto.md   Local vs nube según el cliente
 └── capturas/     Video e imágenes de la demo
 ```
